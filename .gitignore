@@ -216,3 +216,10 @@ flycheck_*.el
 
 # network security
 /network-security.data
+.env
+__pycache__/
+*.pyc
+db.sqlite3
+venv/
+public_collected/
+
