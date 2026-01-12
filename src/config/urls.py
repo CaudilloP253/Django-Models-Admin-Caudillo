@@ -18,12 +18,16 @@ Including another URLconf
 from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path
+from django.views.generic import TemplateView, RedirectView
 
 urlpatterns = [
     path("up/", include("up.urls")),
     path("", include("pages.urls")),
-     path("ecommerce/", include("ecommerce.urls")),
+    path("ecommerce/", include("ecommerce.urls")),
+    path("products/", include("products.urls")),
     path("admin/", admin.site.urls),
+    path("about-us/", RedirectView.as_view(url="/about/")),
+    path("about/", TemplateView.as_view(template_name="about.html")),
 ]
 if not settings.TESTING:
     urlpatterns = [
