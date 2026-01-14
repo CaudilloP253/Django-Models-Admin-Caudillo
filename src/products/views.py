@@ -1,32 +1,39 @@
 # from django.views.generic import View, ListView
 #from django.views.generic import TemplateView, View, RedirectView
-from django.views.generic import View, ListView, DetailView
-from django.shortcuts import render
+from django.views.generic import View, ListView, DetailView, RedirectView
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
 from .models import Product, DigitalProduct
+from .mixins import TemplateTitleMixin
 
-class ProductListView(ListView):
-    model = Product
+class ProductIDRedirectView(RedirectView):
+    def get_redirect_url(self, request, *args, **kwargs):
+        url_params = self.kwargs
+        pk= url_params.get("pk")
+        obj = get_object_or_404(Product, pk=pk)
+        slug= obj.slug 
+        return f"/products/products/(slug)"
     
-    def get_context_data(self,*args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
-        print(context)
-        context["title"]= "Mi fabuloso ecommerce"
-        return context
+class ProductRedirectView(RedirectView):
+    def get_redirect_url(self, *args, **kwargs):
+        url_params = self.kwargs
+        slug= url_params.get("slug")
+        return f"/products/products/(slug)"
+
+
+
+class ProductListView(TemplateTitleMixin, ListView):
+    model = Product
+    title = "Productos Físicos"
 
 class ProductDetailView(DetailView):
     model = Product
 
-class DigitalProductListView(ListView):
+class DigitalProductListView(TemplateTitleMixin, ListView):
     model = DigitalProduct
     template_name ="products/product_list.html"
+    title = "Productos Digitales"
     
-    def get_context_data(self,*args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
-        print(context)
-        context["title"]= "Mi fabuloso ecommerce"
-        return context
-
 
 
 
