@@ -5,6 +5,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
 from .models import Product, DigitalProduct
 from .mixins import TemplateTitleMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 class ProductIDRedirectView(RedirectView):
     def get_redirect_url(self, request, *args, **kwargs):
@@ -34,7 +35,8 @@ class DigitalProductListView(TemplateTitleMixin, ListView):
     template_name ="products/product_list.html"
     title = "Productos Digitales"
     
-
+class ProductDetailView(DetailView, LoginRequiredMixin):
+    model = Product
 
 
 
