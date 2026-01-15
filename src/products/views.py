@@ -1,11 +1,18 @@
 # from django.views.generic import View, ListView
 #from django.views.generic import TemplateView, View, RedirectView
-from django.views.generic import View, ListView, DetailView, RedirectView
+from django.views.generic import (
+    View, 
+    ListView, 
+    DetailView, 
+    RedirectView,
+    CreateView
+)
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
 from .models import Product, DigitalProduct
 from .mixins import TemplateTitleMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
+from .forms import ProductModelForm
 
 class ProductIDRedirectView(RedirectView):
     def get_redirect_url(self, request, *args, **kwargs):
@@ -20,8 +27,6 @@ class ProductRedirectView(RedirectView):
         url_params = self.kwargs
         slug= url_params.get("slug")
         return f"/products/products/(slug)"
-
-
 
 class ProductListView(TemplateTitleMixin, ListView):
     model = Product
@@ -38,9 +43,20 @@ class DigitalProductListView(TemplateTitleMixin, ListView):
 class ProductDetailView(DetailView, LoginRequiredMixin):
     model = Product
 
+class ProtectedProductDetailView(DetailView, LoginRequiredMixin):
+    model = Product
 
+class ProtectedProductCreateView(LoginRequiredMixin, CreateView):
+    form_class= ProductModelForm
+    template_name= "forms.html"
 
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
 
+    def form_invalid(self, form):
+        form.instance.user = self.request.user
+        return super().form_invalid(form)
 
 # from django.decorators.http import require_http_methods
 
