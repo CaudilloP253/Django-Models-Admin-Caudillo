@@ -8,6 +8,7 @@ from django.views.generic import (
     CreateView,
     UpdateView,
     DeleteView,
+    ProtectedListView,
 )
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
@@ -79,7 +80,12 @@ class ProtectedProductDeleteView(LoginRequiredMixin, DeleteView):
         
     def get_success_url(self):
         return "/products/products"
+        
+class ProtectedListView(LoginRequiredMixin,TemplateTitleMixin, ListView):
+    model = Product
+    title = "Productos Físicos"
 
+    
 # from django.decorators.http import require_http_methods
 
 # from .models import Product
