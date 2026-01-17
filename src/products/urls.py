@@ -30,5 +30,6 @@ urlpatterns= [
     path("my-products/create/", ProtectedProductCreateView.as_view()),
 
     path ("my-products/<slug:slug>/", ProtectedProductUpdateView.as_view()),
-    path ("my-products/<slug:slug>/delete/", ProtectedProductDeleteView.as_view()),    
+    path ("my-products/<slug:slug>/delete/", ProtectedProductDeleteView.as_view()),
+    path("my-products/", ProtectedListView.as_view()),
 ]
