@@ -85,6 +85,9 @@ class ProtectedListView(LoginRequiredMixin,TemplateTitleMixin, ListView):
     model = Product
     title = "Productos Físicos"
 
+    def get_queryset(self):
+        return Product.objects.filter(user=self.request.user)
+
     
 # from django.decorators.http import require_http_methods
 
