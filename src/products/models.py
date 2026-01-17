@@ -10,6 +10,12 @@ class Product(models.Model):
     def get_absolute_url(self):
         return f"/products/products/{self.slug}"
 
+    def get_edit_url(self):
+            return f"/products/my-products/{self.slug}"
+    
+    def get_delete_url(self):
+        return f"/products/my-products/{self.slug}/delete"     
+
 class DigitalProduct(Product):
     class Meta:
         proxy = True
