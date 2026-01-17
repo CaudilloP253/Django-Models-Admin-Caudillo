@@ -5,7 +5,9 @@ from django.views.generic import (
     ListView, 
     DetailView, 
     RedirectView,
-    CreateView
+    CreateView,
+    UpdateView,
+    DeleteView,
 )
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
@@ -57,6 +59,26 @@ class ProtectedProductCreateView(LoginRequiredMixin, CreateView):
     def form_invalid(self, form):
         form.instance.user = self.request.user
         return super().form_invalid(form)
+        
+class ProtectedProductUpdateView(LoginRequiredMixin, UpdateView):
+    form_class= ProductModelForm
+    template_name= "products/product_detail.html"
+
+    def get_queryset(self):
+        return Product.objects.filter(user=self.request.user)
+        
+    def get_success_url(self):
+        return self.object.get_edit_url()
+
+class ProtectedProductDeleteView(LoginRequiredMixin, DeleteView):
+    form_class= "forms-delete.html"
+    template_name= "products/product_detail.html"
+
+    def get_queryset(self):
+        return Product.objects.filter(user=self.request.user)
+        
+    def get_success_url(self):
+        return "/products/products"
 
 # from django.decorators.http import require_http_methods
 
