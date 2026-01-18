@@ -11,7 +11,8 @@ from products.views import (
     ProductRedirectView,
     ProtectedProductCreateView,
     ProtectedProductUpdateView, 
-    ProtectedProductDeleteView, 
+    ProtectedProductDeleteView,
+    ProtectedListView
 )
 
 urlpatterns= [

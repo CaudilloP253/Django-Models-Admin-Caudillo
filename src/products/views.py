@@ -8,7 +8,6 @@ from django.views.generic import (
     CreateView,
     UpdateView,
     DeleteView,
-    ProtectedListView,
 )
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
