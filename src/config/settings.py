@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     "pages.apps.PagesConfig",
     "products.apps.ProductsConfig",
     "ecommerce.apps.EcommerceConfig",
+    "accounts.apps.AccountsConfig",
+    "analytics.apps.AnalyticsConfig",
     "base.apps.BaseConfig",
     "django.contrib.admin",
     "django.contrib.auth",
