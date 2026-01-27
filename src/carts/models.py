@@ -3,15 +3,15 @@ from django.conf import settings
 from django.db import models
 from django.db.models.signals import pre_save, post_save, m2m_changed
 
-from product.models import Product
+from products.models import Product
 
 User = settings.AUTH_USER_MODEL
 
 class Cart(models.Model):
-    user = models.ForeignKey(User, null=True, blank= True)
-    products= models.ManyToManyField(Porduct,blank=True)
-    subtotal = models.DecimalField(default=0.0 max_digits=100, decimal_places=2)
-    total = models.DecimalField(default=0.0 max_digits=100, decimal_places=2)
+    user = models.ForeignKey(User, null=True, blank= True, on_delete=models.DO_NOTHING)
+    products= models.ManyToManyField(Product,blank=True)
+    subtotal = models.DecimalField(default=0.0, max_digits=100, decimal_places=2)
+    total = models.DecimalField(default=0.0, max_digits=100, decimal_places=2)
     updated = models.DateTimeField(auto_now=True)
     timestap= models.DateTimeField(auto_now_add=True)
 

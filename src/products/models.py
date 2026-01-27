@@ -16,13 +16,16 @@ class Product(models.Model):
     user = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL)
     title = models.CharField(max_length=120)
     description = models.TextField()
-    prize = models.DecimalField(decimal_places=2, max_digits=20, default=39.99)
+    price = models.DecimalField(decimal_places=2, max_digits=20, default=39.99)
     image = models.ImageField(upload_to=upload_image_path, null=True, blank=True)
     featured= models.BooleanField(default=False)
     active= models.BooleanField(default=True)
     timestamp=models.DateTimeField(auto_now_add=True)
     is_digital= models.BooleanField(default=False)
     slug= models.SlugField(unique=True)
+
+    def __str__(self):
+        return self.title
 
     def get_absolute_url(self):
         return f"/products/products/{self.slug}"
