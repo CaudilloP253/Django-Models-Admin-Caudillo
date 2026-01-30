@@ -1,60 +1,59 @@
 {% extends "base.html" %}
 
 {% block javascript %}
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-
 <script>
   $(document).ready(function(){
+
     function renderChart(id, data, labels){
-      var ctx = $("#"+id)
-      var myChart = new Chart(ctx, {
+      const canvas = document.getElementById(id);
+      const ctx = canvas.getContext("2d");
+
+      new Chart(ctx, {
         type: 'bar',
-        data:{
-          labels:labels,
+        data: {
+          labels: labels,
           datasets: [{
             label: 'Ventas',
             data: data,
-            borderWidth:1
+            borderWidth: 1
           }]
         },
         options: {
-            scales: {
+          scales: {
             y: {
               beginAtZero: true
             }
-            }
+          }
         }
-        });
+      });
     }
 
     function getSalesData(id, type){
-      console.log("Pidiendo data para:", type)
-      var url = "/analytics/sales/data"
-      var method = "GET"
-      var data = {"type":type}
+      console.log("Pidiendo data para:", type);
+
       $.ajax({
-        url: url,
-        method: method,
-        data: data,
+        url: "/analytics/sales/data",
+        method: "GET",
+        data: { type: type },
         success: function(responseData){
-          console.log("Respuesta:", responseData)
-          renderChart(id, responseData.data, responseData.labels)
-        }, error: function(error){
-            $.alert("Ocurrió un Error")
+          console.log("Respuesta:", responseData);
+          renderChart(id, responseData.data, responseData.labels);
+        },
+        error: function(){
+          console.error("Error AJAX");
         }
-      })
+      });
     }
 
-    var chartsToRender = $(".render-chart")
-    $.each(chartsToRender, function(index, html){
-      var $this = $(this)
-      if ($this.attr("id") && $this.attr("data-type")){
-          getSalesData($this.attr("id"), $this.attr("data-type"))
+    $(".render-chart").each(function(){
+      const id = $(this).attr("id");
+      const type = $(this).data("type");
+
+      if (id && type){
+        getSalesData(id, type);
       }
-    })
-  })
+    });
+  });
 </script>
 {% endblock %}
 
@@ -106,9 +105,12 @@
 </div>
 
 <div class="col">
-  <canvas class="recent_chart" id="thisWeekSales" data-type="week" width="400" height="400"></canvas>
+  <canvas class="render-chart" 
+  id="thisWeekSales" 
+  data-type="week" 
+  width="400" 
+  height="400"></canvas>
 </div>
 
 
 {% endblock %}
-
